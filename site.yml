@@ -1,0 +1,28 @@
+---
+- name: Provision Frigate Nodes
+  hosts: frigate_nodes
+  become: true
+
+  vars:
+    frigate_user: nodeuser
+    mqtt_host: 192.168.0.46
+
+  tasks:
+    - name: Ensure base packages are installed
+      apt:
+        name:
+          - curl
+          - git
+          - docker.io
+          - docker-compose
+        update_cache: yes
+
+    - name: Pull latest Frigate container
+      community.docker.docker_image:
+        name: ghcr.io/blakeblackshear/frigate
+        source: pull
+
+    - name: Ensure Frigate is running with docker-compose
+      community.docker.docker_compose:
+        project_src: /home/{{ frigate_user }}/frigate
+        restarted: true

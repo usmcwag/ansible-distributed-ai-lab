@@ -2,17 +2,19 @@ name: Run Ansible Playbook
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'ansible/**'
       - '.github/workflows/ansible-playbook.yml'
+  workflow_dispatch: 
 
 jobs:
-  deploy:
+  run-ansible:
     runs-on: self-hosted
-
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -25,5 +27,6 @@ jobs:
         pip install ansible
 
     - name: Run Ansible Playbook
-      run: |
-        ansible-playbook ansible/playbooks/provision-node2.yml -i ansible/inventories/hosts --check
+      run: ansible-playbook site.yml
+        
+#        ansible-playbook ansible/playbooks/provision-node2.yml -i ansible/inventories/hosts --check
