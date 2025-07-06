@@ -1,0 +1,29 @@
+name: Run Ansible Playbook
+
+on:
+  push:
+    paths:
+      - 'ansible/**'
+      - '.github/workflows/ansible-playbook.yml'
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Ansible
+      run: |
+        python -m pip install --upgrade pip
+        pip install ansible
+
+    - name: Run Ansible Playbook
+      run: |
+        ansible-playbook ansible/playbooks/provision-node2.yml -i ansible/inventories/hosts --check
