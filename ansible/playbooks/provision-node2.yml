@@ -1,0 +1,25 @@
+- name: Install and configure Frigate Node
+  hosts: node2
+  become: yes
+  tasks:
+    - name: Install dependencies
+      apt:
+        name:
+          - docker.io
+          - docker-compose
+          - mosquitto-clients
+        state: present
+        update_cache: yes
+
+    - name: Copy Frigate config
+      copy:
+        src: ./config/
+        dest: /home/nodeuser/frigate/config/
+        owner: nodeuser
+        group: nodeuser
+        mode: 0755
+
+    - name: Launch Frigate
+      shell: |
+        cd /home/nodeuser/frigate
+        docker compose up -d
