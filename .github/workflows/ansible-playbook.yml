@@ -30,4 +30,4 @@ jobs:
       run: 
 #        ansible-playbook site.yml
         
-        ansible-playbook ansible/playbooks/provision-node2.yml -i ansible/inventories/hosts --check
+        ansible-playbook ansible/playbooks/provision-node2.yml -i inventory.ini --check
